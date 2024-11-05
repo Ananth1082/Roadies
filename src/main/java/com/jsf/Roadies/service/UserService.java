@@ -2,11 +2,13 @@ package com.jsf.Roadies.service;
 
 import com.jsf.Roadies.Exceptions.UserAlreadyExistsException;
 import com.jsf.Roadies.Exceptions.UserNotFoundException;
+import com.jsf.Roadies.dto.UserDTO;
 import com.jsf.Roadies.model.User;
 import com.jsf.Roadies.repository.UserRepository;
 import com.jsf.Roadies.request.CreateUserRequest;
 import com.jsf.Roadies.request.UpdateUserRequest;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,7 +18,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserService implements IUserService {
     private final UserRepository userRepository;
-
+    private final ModelMapper modelMapper;
 
     @Override
     public User getUserById(long id) {
@@ -52,6 +54,7 @@ public class UserService implements IUserService {
                     user.setPhoneNumber(req.getPhoneNumber());
                     user.setBio(req.getBio());
                     user.setPasswordHash(req.getPassword());
+                    userRepository.save(user);
                     return user;
                 }).orElseThrow(() -> new UserAlreadyExistsException("User already exists"))
                 ;
@@ -75,5 +78,9 @@ public class UserService implements IUserService {
                 });
 
 
+    }
+    @Override
+    public UserDTO convertUserToDto(User user) {
+        return modelMapper.map(user, UserDTO.class);
     }
 }

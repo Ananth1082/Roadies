@@ -16,11 +16,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     User findByName(String username);
 
-    @Query("SELECT new com.jsf.Roadies.dto.UserDTO(u.name, u.image.id) FROM User u")
-    List<UserDTO> findAllUsersWithNameAndImage();
-
     Boolean existsByPhoneNumber(String phoneNumber);
     Boolean existsByName(String name);
 
-    Object save(CreateUserRequest createUserRequest);
 }

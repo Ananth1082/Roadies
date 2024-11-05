@@ -1,5 +1,6 @@
 package com.jsf.Roadies.service;
 
+import com.jsf.Roadies.dto.UserDTO;
 import com.jsf.Roadies.model.User;
 import com.jsf.Roadies.request.CreateUserRequest;
 import com.jsf.Roadies.request.UpdateUserRequest;
@@ -14,4 +15,5 @@ public interface IUserService {
     User createUser(CreateUserRequest req);
     User updateUser(UpdateUserRequest req, long id);
     void deleteUser(long id);
+    UserDTO convertUserToDto(User user);
 }

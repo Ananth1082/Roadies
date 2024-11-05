@@ -1,0 +1,20 @@
+meta {
+  name: Create user
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{base_url}}/user
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "username":"Ananth Shetty",
+    "password": "akjdnkjsd",
+    "phoneNumber" : "sdfkjnsdfkj",
+    "bio": "dskjfnsdkfnsdfkj fkjds dfkds fk"
+  }
+}

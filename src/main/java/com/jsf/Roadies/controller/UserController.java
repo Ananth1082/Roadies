@@ -24,7 +24,7 @@ public class UserController {
     public ResponseEntity<ApiResponse> getUserById(@PathVariable Long userId) {
         try {
             User user = userService.getUserById(userId);
-            UserDTO userDTO = new UserDTO();
+            UserDTO userDTO = userService.convertUserToDto(user);
             return ResponseEntity.ok(new ApiResponse("success",userDTO));
         } catch (UserNotFoundException e) {
             return ResponseEntity.status(NOT_FOUND).body(new ApiResponse("error",e.getMessage()));
@@ -35,7 +35,7 @@ public class UserController {
     public ResponseEntity<ApiResponse> createUser(@RequestBody CreateUserRequest req) {
         try {
             User user = userService.createUser(req);
-            UserDTO userDTO = new UserDTO();
+            UserDTO userDTO = userService.convertUserToDto(user);
             return ResponseEntity.ok(new ApiResponse("success",userDTO));
         }catch (UserAlreadyExistsException e) {
             return ResponseEntity.status(NOT_FOUND).body(new ApiResponse("error",e.getMessage()));
@@ -46,7 +46,7 @@ public class UserController {
     public ResponseEntity<ApiResponse> updateUser(@PathVariable Long userId, @RequestBody UpdateUserRequest req) {
         try {
             User user = userService.updateUser(req,userId);
-            UserDTO userDTO = new UserDTO();
+            UserDTO userDTO = userService.convertUserToDto(user);
             return ResponseEntity.ok(new ApiResponse("success",userDTO));
         }catch (UserNotFoundException e) {
             return ResponseEntity.status(NOT_FOUND).body(new ApiResponse("error",e.getMessage()));
@@ -57,7 +57,7 @@ public class UserController {
     public ResponseEntity<ApiResponse> deleteUser(@PathVariable Long userId) {
         try {
             userService.deleteUser(userId);
-            return ResponseEntity.ok(new ApiResponse("success",null));
+            return ResponseEntity.ok(new ApiResponse("success",userId));
         } catch (UserNotFoundException e) {
             return ResponseEntity.status(NOT_FOUND).body(new ApiResponse("error",e.getMessage()));
         }

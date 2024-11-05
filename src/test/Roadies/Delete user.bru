@@ -1,0 +1,15 @@
+meta {
+  name: Delete user
+  type: http
+  seq: 5
+}
+
+delete {
+  url: {{base_url}}/user/:userId
+  body: none
+  auth: none
+}
+
+params:path {
+  userId: 1
+}

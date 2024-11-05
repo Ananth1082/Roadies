@@ -1,15 +1,11 @@
 package com.jsf.Roadies.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
+@Data
 public class UserDTO {
+    private Long id;
     private String name;
-    private Long imageId; // Assuming imageId is of type Long
+    private String phoneNumber;
+    private String bio;
 }
