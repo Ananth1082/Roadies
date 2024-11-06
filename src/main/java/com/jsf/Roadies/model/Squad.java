@@ -2,9 +2,10 @@ package com.jsf.Roadies.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
-
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -22,9 +23,11 @@ public class Squad {
     private int squadCapacity;
     private int squadRange;
 
-    private Timestamp createdAt;
-    private Timestamp updatedAt;
-    private Boolean isExpired;
+    @CreationTimestamp
+    private LocalDateTime createdAt;
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
+    private Boolean isExpired=false;
 
     @OneToMany(mappedBy = "squad", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Route> routes;

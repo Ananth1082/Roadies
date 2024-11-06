@@ -7,7 +7,7 @@ import com.jsf.Roadies.model.User;
 import com.jsf.Roadies.request.CreateUserRequest;
 import com.jsf.Roadies.request.UpdateUserRequest;
 import com.jsf.Roadies.response.ApiResponse;
-import com.jsf.Roadies.service.UserService;
+import com.jsf.Roadies.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

@@ -1,4 +1,4 @@
-package com.jsf.Roadies.service;
+package com.jsf.Roadies.service.user;
 
 import com.jsf.Roadies.dto.UserDTO;
 import com.jsf.Roadies.model.User;

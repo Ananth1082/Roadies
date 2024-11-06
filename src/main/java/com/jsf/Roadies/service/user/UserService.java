@@ -1,4 +1,4 @@
-package com.jsf.Roadies.service;
+package com.jsf.Roadies.service.user;
 
 import com.jsf.Roadies.Exceptions.UserAlreadyExistsException;
 import com.jsf.Roadies.Exceptions.UserNotFoundException;
@@ -56,8 +56,7 @@ public class UserService implements IUserService {
                     user.setPasswordHash(req.getPassword());
                     userRepository.save(user);
                     return user;
-                }).orElseThrow(() -> new UserAlreadyExistsException("User already exists"))
-                ;
+                }).orElseThrow(() -> new UserAlreadyExistsException("User already exists"));
     }
 
     @Override
