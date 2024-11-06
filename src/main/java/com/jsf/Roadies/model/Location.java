@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -26,7 +27,8 @@ public class Location {
 
     private User user;
 
-    private LocalDateTime time; // Changed to LocalDateTime for better handling
+    @CreationTimestamp
+    private LocalDateTime time;
 
     private Double latitude;
     private Double longitude;
