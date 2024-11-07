@@ -5,13 +5,10 @@ import com.jsf.Roadies.Exceptions.SquadNotFoundException;
 import com.jsf.Roadies.dto.SquadDTO;
 import com.jsf.Roadies.model.Squad;
 import com.jsf.Roadies.request.CreateSquadRequest;
-import com.jsf.Roadies.request.CreateUserRequest;
 import com.jsf.Roadies.response.ApiResponse;
 import com.jsf.Roadies.service.squad.SquadService;
-import com.jsf.Roadies.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import static org.springframework.http.HttpStatus.NOT_FOUND;
@@ -21,7 +18,6 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 @RequestMapping("${api.prefix}/squad")
 public class SquadController {
     private final SquadService squadService;
-    private final UserService userService;
 
     @GetMapping("{squadId}")
     public ResponseEntity<ApiResponse> getSquadDetails(@PathVariable Long squadId) {
