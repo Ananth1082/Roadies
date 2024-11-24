@@ -28,5 +28,5 @@ public class Chat {
     @Column(name = "sender_id", insertable = false, updatable = false)
     private Long senderId;
     @Column(name = "group_id", insertable = false, updatable = false)
-    private Long groupId;
+    private Long squadId;
 }
