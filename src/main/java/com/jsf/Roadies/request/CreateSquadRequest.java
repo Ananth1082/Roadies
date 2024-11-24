@@ -8,7 +8,7 @@ import java.util.List;
 
 @Data
 public class CreateSquadRequest {
-    private Long id;
+    private Long userId;
     private String squadName;
     private String squadDescription;
     private int squadCapacity;

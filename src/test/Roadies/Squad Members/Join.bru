@@ -1,0 +1,18 @@
+meta {
+  name: Join
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{base_url}}/members/join
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "squadId":2,
+    "userId":2
+  }
+}

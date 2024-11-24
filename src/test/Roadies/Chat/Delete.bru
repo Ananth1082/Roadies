@@ -1,0 +1,22 @@
+meta {
+  name: Delete
+  type: http
+  seq: 3
+}
+
+delete {
+  url: {{base_url}}/chats/:chat-id
+  body: json
+  auth: none
+}
+
+params:path {
+  chat-id: 1
+}
+
+body:json {
+  {
+    "senderId": 2,
+    "squadId": 2
+  }
+}

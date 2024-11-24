@@ -1,0 +1,15 @@
+meta {
+  name: Get User squads
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{base_url}}/members/user/:use-id
+  body: none
+  auth: none
+}
+
+params:path {
+  use-id: 2
+}

@@ -1,0 +1,20 @@
+meta {
+  name: Create
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{base_url}}/squad
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "squadName":"Squadsdfsdfsf 2",
+    "squadDescription": "squad for field trip 2",
+    "squadCapacity": 5,
+    "squadRange":100
+  }
+}

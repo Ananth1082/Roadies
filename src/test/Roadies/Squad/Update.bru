@@ -1,0 +1,24 @@
+meta {
+  name: Update
+  type: http
+  seq: 3
+}
+
+put {
+  url: {{base_url}}/squad/:squad-id
+  body: json
+  auth: none
+}
+
+params:path {
+  squad-id: 2
+}
+
+body:json {
+  {
+    "squadName":"Squad Number 1",
+    "squadDescription": "squad for field trip",
+    "squadCapacity": 10,
+    "squadRange":100
+  }
+}

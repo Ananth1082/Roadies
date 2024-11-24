@@ -1,0 +1,15 @@
+meta {
+  name: Get squad chats
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{base_url}}/chats/squad/:squad-id
+  body: none
+  auth: none
+}
+
+params:path {
+  squad-id: 2
+}

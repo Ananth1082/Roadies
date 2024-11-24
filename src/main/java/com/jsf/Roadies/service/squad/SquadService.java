@@ -4,8 +4,12 @@ import com.jsf.Roadies.Exceptions.SquadAlreadyExistsException;
 import com.jsf.Roadies.Exceptions.SquadNotFoundException;
 import com.jsf.Roadies.Exceptions.UserNotFoundException;
 import com.jsf.Roadies.dto.SquadDTO;
+import com.jsf.Roadies.enums.GroupRoleType;
 import com.jsf.Roadies.model.Squad;
+import com.jsf.Roadies.model.UserSquad;
 import com.jsf.Roadies.repository.SquadRepository;
+import com.jsf.Roadies.repository.UserRepository;
+import com.jsf.Roadies.repository.UserSquadRepository;
 import com.jsf.Roadies.request.CreateSquadRequest;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -19,6 +23,8 @@ import java.util.Optional;
 public class SquadService implements ISquadService {
     private final SquadRepository squadRepository;
     private final ModelMapper modelMapper;
+    private final UserSquadRepository userSquadRepository;
+    private final UserRepository userRepository;
 
 
     @Override
@@ -37,12 +43,19 @@ public class SquadService implements ISquadService {
         return Optional.of(request)
                 .filter(s -> !squadRepository.existsBySquadName(s.getSquadName()))
                 .map(req -> {
+
                     Squad squad = new Squad();
                     squad.setSquadName(req.getSquadName());
                     squad.setSquadCapacity(req.getSquadCapacity());
                     squad.setSquadRange(req.getSquadRange());
                     squad.setSquadDescription(req.getSquadDescription());
                     squadRepository.save(squad);
+
+                    UserSquad us = new UserSquad();
+                    us.setUser(userRepository.findById(req.getUserId()).orElseThrow(()->new UserNotFoundException("Invalid user id")));
+                    us.setSquad(squad);
+                    us.setRole(GroupRoleType.ADMIN);
+                    userSquadRepository.save(us);
                     return squad;
                 }).orElseThrow(() -> new SquadAlreadyExistsException("Squad already exists"));
     }

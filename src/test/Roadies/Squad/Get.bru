@@ -1,15 +1,15 @@
 meta {
-  name: Get User
+  name: Get
   type: http
-  seq: 3
+  seq: 2
 }
 
 get {
-  url: {{base_url}}/user/:userId
+  url: {{base_url}}/squad/:squad-id
   body: none
   auth: none
 }
 
 params:path {
-  userId: 1
+  squad-id: 3
 }

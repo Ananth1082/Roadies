@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -19,14 +20,18 @@ public class Chat {
     private Long id;
 
     private String message;
+    @CreationTimestamp
     private LocalDateTime sentAt;
 
     @ManyToOne
     @JoinColumn(name = "user_squad_id")
     private UserSquad userSquad;
 
-    @Column(name = "sender_id", insertable = false, updatable = false)
-    private Long senderId;
-    @Column(name = "group_id", insertable = false, updatable = false)
-    private Long squadId;
+    @OneToOne
+    @JoinColumn(name = "sender_id")
+    private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "group_id")
+    private Squad squad;
 }

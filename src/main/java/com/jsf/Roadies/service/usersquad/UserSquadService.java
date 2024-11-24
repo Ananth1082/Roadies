@@ -16,10 +16,10 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class UserSquadService implements IUserSquadService {
-    UserSquadRepository userSquadRepository;
-    UserRepository userRepository;
-    SquadRepository squadRepository;
-    ModelMapper modelMapper;
+    private final UserSquadRepository userSquadRepository;
+    private final UserRepository userRepository;
+    private final SquadRepository squadRepository;
+    private final ModelMapper modelMapper;
 
     @Override
     public List<User> getSquadMembers(Long squadId) {
