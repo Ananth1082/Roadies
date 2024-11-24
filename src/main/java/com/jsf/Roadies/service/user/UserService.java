@@ -6,6 +6,7 @@ import com.jsf.Roadies.dto.UserDTO;
 import com.jsf.Roadies.model.User;
 import com.jsf.Roadies.repository.UserRepository;
 import com.jsf.Roadies.request.CreateUserRequest;
+import com.jsf.Roadies.request.LoginRequest;
 import com.jsf.Roadies.request.UpdateUserRequest;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -36,10 +37,6 @@ public class UserService implements IUserService {
         return userRepository.findByName(username);
     }
 
-    @Override
-    public User getUserByPhoneNumber(String phoneNumber) {
-        return userRepository.findByPhoneNumber(phoneNumber);
-    }
 
     @Override
     public User createUser(CreateUserRequest request) {
@@ -77,6 +74,17 @@ public class UserService implements IUserService {
                 });
 
 
+    }
+    @Override
+    public Long login(LoginRequest req) {
+        User user = userRepository
+                .findByPhoneNumber(req.getPhoneNumber())
+                .orElseThrow(()-> new UserNotFoundException("Invalid phone number"));
+        if (user.getPasswordHash().equals(req.getPassword())) {
+            return user.getId();
+        } else {
+            throw new UserNotFoundException("Invalid password");
+        }
     }
     @Override
     public UserDTO convertUserToDto(User user) {

@@ -5,6 +5,7 @@ import com.jsf.Roadies.Exceptions.UserNotFoundException;
 import com.jsf.Roadies.dto.UserDTO;
 import com.jsf.Roadies.model.User;
 import com.jsf.Roadies.request.CreateUserRequest;
+import com.jsf.Roadies.request.LoginRequest;
 import com.jsf.Roadies.request.UpdateUserRequest;
 import com.jsf.Roadies.response.ApiResponse;
 import com.jsf.Roadies.service.user.UserService;
@@ -27,6 +28,16 @@ public class UserController {
             UserDTO userDTO = userService.convertUserToDto(user);
             return ResponseEntity.ok(new ApiResponse("success",userDTO));
         } catch (UserNotFoundException e) {
+            return ResponseEntity.status(NOT_FOUND).body(new ApiResponse("error",e.getMessage()));
+        }
+    }
+
+    @PostMapping("login")
+    public ResponseEntity<ApiResponse> login(@RequestBody LoginRequest req) {
+        try {
+            Long id = userService.login(req);
+            return ResponseEntity.ok(new ApiResponse("success",id));
+        } catch (Exception e) {
             return ResponseEntity.status(NOT_FOUND).body(new ApiResponse("error",e.getMessage()));
         }
     }

@@ -1,0 +1,18 @@
+meta {
+  name: Login
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{base_url}}/user/login
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "phoneNumber": "9353798875",
+    "password":"ananth123"
+  }
+}
