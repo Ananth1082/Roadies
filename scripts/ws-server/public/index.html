@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>WebSocket</title>
+</head>
+Squad ID:
+<input type="text" id="squadID" />
+
+user ID:
+<input type="text" id="userID" />
+
+location:
+<input type="text" id="loc" />
+
+<button onclick="SendLoc()">Send location</button>
+<button onclick="GetLocs()">Get location</button>
+
+<button onclick="ws.send('BYE')">Close Connection</button>
+
+<body>
+<p id="output"></p>
+
+<script>
+    var loc = window.location;
+    var uri = "ws://" + loc.host + "/ws";
+    console.log(uri);
+
+    ws = new WebSocket(uri);
+
+    ws.onopen = function () {
+        console.log("Connected");
+    };
+
+    ws.onmessage = function (evt) {
+        var out = document.getElementById("output");
+        out.innerHTML += evt.data + "<br>";
+    };
+    function SendLoc() {
+        const uidEle = document.getElementById("userID");
+        const locEle = document.getElementById("loc");
+        const data = "POST " + uidEle.value + "," + locEle.value;
+        console.log(data);
+        ws.send(data);
+    }
+
+    function GetLocs() {
+        const sid = document.getElementById("squadID").value;
+        ws.send("GET " + sid);
+    }
+</script>
+</body>
+</html>
