@@ -20,10 +20,10 @@ func dbConn() *sql.DB {
 }
 
 func addUserLoc(db *sql.DB, loc Location) {
-	res, err := db.Exec("INSERT INTO location(latitude,longitude,user_id,time) VALUES(?,?,?,?)", loc.lat, loc.long, loc.userId, time.Now())
+	res, err := db.Exec("INSERT INTO location(latitude,longitude,user_id,time) VALUES(?,?,?,?)", loc.Lat, loc.Long, loc.UserId, time.Now())
 	log.Println("Inserting location: ", res)
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
 	}
 }
 
@@ -41,12 +41,13 @@ func getSquadsCurLoc(db *sql.DB, squadId int64) []Location {
 	`, squadId)
 	log.Println("Getting current users location")
 	if err != nil {
-		log.Fatal("Error fetching info: ", err)
+		log.Println("Error fetching info: ", err)
+		return nil
 	}
 	locations := make([]Location, 0, 10)
 	for res.Next() {
 		loc := new(Location)
-		res.Scan(&loc.userId, &loc.lat, &loc.long)
+		res.Scan(&loc.UserId, &loc.Lat, &loc.Long)
 		locations = append(locations, *loc)
 	}
 	return locations

@@ -14,7 +14,7 @@ location:
 <input type="text" id="loc" />
 
 <button onclick="SendLoc()">Send location</button>
-<button onclick="GetLocs()">Get location</button>
+<!-- <button onclick="GetLocs()">Get location</button> -->
 
 <button onclick="ws.send('BYE')">Close Connection</button>
 
@@ -32,21 +32,17 @@ location:
         console.log("Connected");
     };
 
-    ws.onmessage = function (evt) {
+    ws.onmessage =async function (evt) {
         var out = document.getElementById("output");
-        out.innerHTML += evt.data + "<br>";
+        out.innerHTML += await evt.data.text() + "<br>";
     };
     function SendLoc() {
-        const uidEle = document.getElementById("userID");
-        const locEle = document.getElementById("loc");
-        const data = "POST " + uidEle.value + "," + locEle.value;
+        const uid = document.getElementById("userID").value;
+        const loc = document.getElementById("loc").value;
+        const sid = document.getElementById("squadID").value;
+        const data = sid+"," + uid + "," + loc;
         console.log(data);
         ws.send(data);
-    }
-
-    function GetLocs() {
-        const sid = document.getElementById("squadID").value;
-        ws.send("GET " + sid);
     }
 </script>
 </body>

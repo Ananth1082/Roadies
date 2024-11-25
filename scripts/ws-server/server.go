@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 	"io"
@@ -16,9 +17,9 @@ import (
 var db = dbConn()
 
 type Location struct {
-	userId int64
-	lat    float64
-	long   float64
+	UserId int64
+	Lat    float64
+	Long   float64
 }
 
 func UnMarshalLocation(data string) (*Location, error) {
@@ -29,32 +30,32 @@ func UnMarshalLocation(data string) (*Location, error) {
 	}
 
 	loc := new(Location)
-	loc.userId, err = strconv.ParseInt(tokens[0], 10, 64)
+	loc.UserId, err = strconv.ParseInt(tokens[0], 10, 64)
 	if err != nil {
 		return nil, err
 	}
-	loc.lat, err = strconv.ParseFloat(tokens[1], 64)
+	loc.Lat, err = strconv.ParseFloat(tokens[1], 64)
 	if err != nil {
 		return nil, err
 	}
-	loc.long, err = strconv.ParseFloat(tokens[2], 64)
+	loc.Long, err = strconv.ParseFloat(tokens[2], 64)
 	if err != nil {
 		return nil, err
 	}
 	return loc, nil
 }
 
-func MarshalLocation(loc Location) string {
-	return fmt.Sprintf("%d,%f,%f\n", loc.userId, loc.lat, loc.long)
-}
+// func MarshalLocation(loc Location) string {
+// 	return fmt.Sprintf("%d,%f,%f\n", loc.UserId, loc.Lat, loc.Long)
+// }
 
-func locstoString(locs []Location) string {
-	data := ""
-	for _, loc := range locs {
-		data += MarshalLocation(loc)
-	}
-	return data
-}
+// func locstoString(locs []Location) string {
+// 	data := ""
+// 	for _, loc := range locs {
+// 		data += MarshalLocation(loc)
+// 	}
+// 	return data
+// }
 
 func locationHandler(c echo.Context) error {
 	websocket.Handler(func(ws *websocket.Conn) {
@@ -71,20 +72,19 @@ func locationHandler(c echo.Context) error {
 			}
 			if msg == "BYE" {
 				return
-			} else if strings.HasPrefix(msg, "GET ") {
-				sid, err := strconv.ParseInt(strings.Split(msg, " ")[1], 10, 64)
+			} else {
+				tokens := strings.SplitN(msg, ",", 2)
+				data, _ := UnMarshalLocation(tokens[1])
+				addUserLoc(db, *data)
+				sid, _ := strconv.ParseInt(tokens[0], 10, 64)
+				locs := getSquadsCurLoc(db, sid)
+				log.Println("Locs: ", locs)
+				ljson, err := json.Marshal(locs)
 				if err != nil {
 					log.Fatal(err)
-					return
 				}
-				locs := getSquadsCurLoc(db, sid)
-				websocket.Message.Send(ws, locstoString(locs))
-			} else if strings.HasPrefix(msg, "POST ") {
-				data := strings.Split(msg, " ")[1]
-				loc, _ := UnMarshalLocation(data)
-				addUserLoc(db, *loc)
-			} else {
-				websocket.Message.Send(ws, "Invalid Command")
+				fmt.Println("Locations :", ljson)
+				websocket.Message.Send(ws, ljson)
 			}
 		}
 	}).ServeHTTP(c.Response(), c.Request())
@@ -94,9 +94,10 @@ func locationHandler(c echo.Context) error {
 func main() {
 	e := echo.New()
 	e.Debug = true
+	e.Use(middleware.CORS())
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 	e.Static("/", "./public")
 	e.GET("/ws", locationHandler)
-	e.Logger.Fatal(e.Start(":8080"))
+	e.Logger.Fatal(e.Start(":8081"))
 }
