@@ -11,6 +11,6 @@ public class ChatDTO {
     private Long id;
     private String message;
     private LocalDateTime sentAt;
-    private Long senderId;
+    private Long userId;
     private Long squadId;
 }

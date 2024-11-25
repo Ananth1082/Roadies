@@ -91,6 +91,25 @@ func locationHandler(c echo.Context) error {
 	return nil
 }
 
+func RestLocationHandler(c echo.Context) error {
+
+	var req struct {
+		SquadId int64   `json:"squad_id"`
+		UserId  int64   `json:"user_id"`
+		Lat     float64 `json:"lat"`
+		Long    float64 `json:"long"`
+	}
+
+	err := c.Bind(&req)
+	if err != nil {
+		return err
+	}
+
+	addUserLoc(db, Location{UserId: req.UserId, Lat: req.Lat, Long: req.Long})
+	locs := getSquadsCurLoc(db, req.SquadId)
+	return c.JSON(200, locs)
+}
+
 func main() {
 	e := echo.New()
 	e.Debug = true
@@ -99,5 +118,6 @@ func main() {
 	e.Use(middleware.Recover())
 	e.Static("/", "./public")
 	e.GET("/ws", locationHandler)
+	e.POST("/rest/location", RestLocationHandler)
 	e.Logger.Fatal(e.Start(":8081"))
 }
