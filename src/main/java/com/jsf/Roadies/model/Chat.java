@@ -27,7 +27,7 @@ public class Chat {
     @JoinColumn(name = "user_squad_id")
     private UserSquad userSquad;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "sender_id")
     private User user;
 
